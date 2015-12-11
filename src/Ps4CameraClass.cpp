@@ -18,15 +18,17 @@ cv::Mat ps4camera::receive_images(){
 
     cv::Mat ps4image;
     capturer >> ps4image;
-    ROS_INFO("GOT IMAGES");
     return ps4image;
 }
 
 void ps4camera::spin(){
     while (ros::ok())
     {
-        cv::Rect left_rect(48,0, 640, 480);
-        cv::Rect right_rect(688,0, 640, 480);
+        int resolution_x = 1280;
+        int resolution_y = 800;
+
+        cv::Rect left_rect((48),0, resolution_x, resolution_y);
+        cv::Rect right_rect((resolution_x+48),0, resolution_x, resolution_y);
 
         cv::Mat full_image = receive_images();
         cv::Mat left_image(full_image,left_rect);
