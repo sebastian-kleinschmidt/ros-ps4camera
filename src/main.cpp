@@ -7,11 +7,11 @@ int main(int argc, char **argv)
 {
   ros::init(argc, argv, "ps4_camera_bridge");
 
-  ps4camera camera;
+  ps4camera *camera = new ps4camera();
 
-  if(camera.init())
+  if(camera->init())
   {
-    camera.spin();
+    camera->spin();
   }
   ros::shutdown();
 

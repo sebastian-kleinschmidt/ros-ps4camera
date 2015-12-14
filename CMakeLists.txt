@@ -8,7 +8,8 @@ find_package(catkin REQUIRED
   message_filters
   cv_bridge
   roslib
-  dynamic_reconfigure)
+  dynamic_reconfigure
+  image_transport)
 
 
 ## Generate dynamic reconfigure parameters in the 'cfg' folder

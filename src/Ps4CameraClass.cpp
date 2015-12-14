@@ -1,10 +1,14 @@
 #include "Ps4CameraClass.h"
 
+ps4camera::ps4camera()
+{
+}
+
 bool ps4camera::init(){
     //Read Launchfile
-
-    camera1_pub = n.advertise<std_msgs::String>("left_image", 1000);
-    camera2_pub = n.advertise<std_msgs::String>("right_image", 1000);
+    it = new image_transport::ImageTransport(n);
+    camera1_pub = it->advertise("left_image", 1);
+    camera2_pub = it->advertise("right_image", 1);
 
     if(capturer.open(0))
     {
@@ -34,9 +38,12 @@ void ps4camera::spin(){
         cv::Mat left_image(full_image,left_rect);
         cv::Mat right_image(full_image,right_rect);
 
-        cv::imshow("Left Image", left_image);
-        cv::imshow("Right Image", right_image);
-        cv::waitKey(1);
-        //ros::spin();
+        sensor_msgs::ImagePtr left_msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", left_image).toImageMsg();
+        sensor_msgs::ImagePtr right_msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", right_image).toImageMsg();
+
+        camera1_pub.publish(left_msg);
+        camera2_pub.publish(right_msg);
+
+        ros::spinOnce();
     }
 }
