@@ -57,6 +57,9 @@ void ps4camera::spin(){
         sensor_msgs::ImagePtr left_msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", left_image).toImageMsg();
         sensor_msgs::ImagePtr right_msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", right_image).toImageMsg();
 
+        left_msg->header.stamp = ros::Time::now();
+        right_msg->header.stamp = ros::Time::now();
+
         camera1_pub.publish(left_msg);
         camera2_pub.publish(right_msg);
 
