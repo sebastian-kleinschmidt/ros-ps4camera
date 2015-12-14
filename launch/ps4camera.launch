@@ -1,0 +1,6 @@
+<launch>
+	<param name="deviceID" value="0" type="int" />
+	<param name="leftImageTopic" value="PS4_LeftImage" type="str" />
+	<param name="rightImageTopic" value="PS4_RightImage" type="str" />
+  	<node name="ps4camera_bridge" pkg="ps4camera" type="ps4camera_bridge" output="screen"/> 
+</launch>

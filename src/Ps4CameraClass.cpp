@@ -6,11 +6,27 @@ ps4camera::ps4camera()
 
 bool ps4camera::init(){
     //Read Launchfile
-    it = new image_transport::ImageTransport(n);
-    camera1_pub = it->advertise("left_image", 1);
-    camera2_pub = it->advertise("right_image", 1);
+    int deviceID;
+    std::string LeftImageTopic;
+    std::string RightImageTopic;
 
-    if(capturer.open(0))
+    if(!n.getParam("leftImageTopic",LeftImageTopic) || !n.getParam("rightImageTopic",RightImageTopic))
+    {
+        LeftImageTopic="left_image";
+        RightImageTopic="right_image";
+    }
+
+    if(!n.getParam("deviceID",deviceID))
+    {
+        ROS_ERROR("Using default device: /dev/video0");
+        deviceID=0;
+    }
+
+    it = new image_transport::ImageTransport(n);
+    camera1_pub = it->advertise(LeftImageTopic, 1);
+    camera2_pub = it->advertise(RightImageTopic, 1);
+
+    if(capturer.open(deviceID))
     {
         return true;
     } else {
